@@ -39,7 +39,7 @@ class App(tk.Tk):
         self.make_composite_first()
 
         # display image
-        self.geometry('300x450')
+        self.geometry('700x450')
         self.comp_img_resize = self.comp_img.resize((300, 300))
         self.tkImg = ImageTk.PhotoImage(self.comp_img_resize)
 
@@ -77,6 +77,62 @@ class App(tk.Tk):
         self.red_cutoff_entry.grid(row = 0, column = 1)
         self.green_cutoff_entry.grid(row = 1, column = 1)
         self.blue_cutoff_entry.grid(row = 2, column = 1)
+
+        # function text
+        self.red_function_label = ttk.Label(
+            self.input_frame, text = 'Red Function')
+        self.green_function_label = ttk.Label(
+            self.input_frame, text = 'Green Function')
+        self.blue_function_label = ttk.Label(
+            self.input_frame, text = 'Blue Function')
+
+        self.red_function_label.grid(row = 0, column = 2)
+        self.green_function_label.grid(row = 1, column = 2)
+        self.blue_function_label.grid(row = 2, column = 2)
+
+        # function value
+        self.red_function = tk.StringVar()
+        self.green_function = tk.StringVar()
+        self.blue_function = tk.StringVar()
+
+        self.red_function_entry = ttk.Entry(
+            self.input_frame, textvariable = self.red_function)
+        self.green_function_entry = ttk.Entry(
+            self.input_frame, textvariable = self.green_function)
+        self.blue_function_entry = ttk.Entry(
+            self.input_frame, textvariable = self.blue_function)
+
+        self.red_function_entry.grid(row = 0, column = 3)
+        self.green_function_entry.grid(row = 1, column = 3)
+        self.blue_function_entry.grid(row = 2, column = 3)
+
+        # cap text
+        self.red_cap_label = ttk.Label(
+            self.input_frame, text = 'Red Cap')
+        self.green_cap_label = ttk.Label(
+            self.input_frame, text = 'Green Cap')
+        self.blue_cap_label = ttk.Label(
+            self.input_frame, text = 'Blue Cap')
+
+        self.red_cap_label.grid(row = 0, column = 4)
+        self.green_cap_label.grid(row = 1, column = 4)
+        self.blue_cap_label.grid(row = 2, column = 4)
+
+        # cap value
+        self.red_cap = tk.IntVar()
+        self.green_cap = tk.IntVar()
+        self.blue_cap = tk.IntVar()
+
+        self.red_cap_entry = ttk.Entry(
+            self.input_frame, textvariable = self.red_cap)
+        self.green_cap_entry = ttk.Entry(
+            self.input_frame, textvariable = self.green_cap)
+        self.blue_cap_entry = ttk.Entry(
+            self.input_frame, textvariable = self.blue_cap)
+
+        self.red_cap_entry.grid(row = 0, column = 5)
+        self.green_cap_entry.grid(row = 1, column = 5)
+        self.blue_cap_entry.grid(row = 2, column = 5)
 
         # update button
         self.update_button = ttk.Button(
@@ -146,39 +202,35 @@ class App(tk.Tk):
                 self.comp_pixels[i, j] = (red, green, blue)
 
     def make_composite(self):
-        for i in range(self.red_img.size[0]):
-            for j in range(self.red_img.size[1]):
-                index = j + i * self.red_img.size[1]
-                if self.red_pixels[i, j][0] <= self.red_cutoff.get():
-                    self.red_pixels_a[index] = (0, 0, 0)
-                else:
-                    self.red_pixels_a[index] = (255, 0, 0)
-
-        for i in range(self.green_img.size[0]):
-            for j in range(self.green_img.size[1]):
-                index = j + i * self.green_img.size[1]
-                if self.green_pixels[i, j][1] <= self.green_cutoff.get():
-                    self.green_pixels_a[index] = (0, 0, 0)
-                else:
-                    self.green_pixels_a[index] = (0, 255, 0)
-
-        for i in range(self.blue_img.size[0]):
-            for j in range(self.blue_img.size[1]):
-                index = j + i * self.blue_img.size[1]
-                if self.blue_pixels[i, j][2] <= self.blue_cutoff.get():
-                    self.blue_pixels_a[index] = (0, 0, 0)
-                else:
-                    self.blue_pixels_a[index] = (0, 0, 255)
-
         self.comp_img = Image.new('RGB', self.red_img.size, (0, 0, 0))
         self.comp_pixels = self.comp_img.load()
 
         for i in range(self.red_img.size[0]):
             for j in range(self.red_img.size[1]):
                 index = j + i * self.comp_img.size[1]
-                red = self.red_pixels_a[index][0]
-                green = self.green_pixels_a[index][1]
-                blue = self.blue_pixels_a[index][2]
+
+                red = 0
+                green = 0
+                blue = 0
+
+                r = self.red_pixels[i, j][0]
+                if r > self.red_cutoff.get():
+                    red = eval(self.red_function.get())
+                    if red > self.red_cap.get():
+                        red = self.red_cap.get()
+
+                g = self.green_pixels[i, j][1]
+                if g > self.green_cutoff.get():
+                    green = eval(self.green_function.get())
+                    if green > self.green_cap.get():
+                        green = self.green_cap.get()
+
+                b = self.blue_pixels[i, j][2]
+                if b > self.blue_cutoff.get():
+                    blue = eval(self.blue_function.get())
+                    if blue > self.blue_cap.get():
+                        blue = self.blue_cap.get()
+
                 self.comp_pixels[i, j] = (red, green, blue)
 
         self.comp_img_resize = self.comp_img.resize((300, 300))
