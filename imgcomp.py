@@ -35,8 +35,8 @@ class App(tk.Tk):
         self.path_entry.destroy()
         self.load.destroy()
 
+        # load images
         self.load_images()
-        self.make_composite_first()
 
         # display image
         self.geometry('700x450')
@@ -164,47 +164,10 @@ class App(tk.Tk):
             self.path_prefix + "_DAPI.tiff").convert('RGB')
         self.blue_pixels = self.blue_img.load()
 
-    def make_composite_first(self):
-        self.red_pixels_a = []
-        self.green_pixels_a = []
-        self.blue_pixels_a = []
-
-        for i in range(self.red_img.size[0]):
-            for j in range(self.red_img.size[1]):
-                if self.red_pixels[i, j][0] <= self.red_cutoff.get():
-                    self.red_pixels_a += [(0, 0, 0)]
-                else:
-                    self.red_pixels_a += [(255, 0, 0)]
-
-        for i in range(self.green_img.size[0]):
-            for j in range(self.green_img.size[1]):
-                if self.green_pixels[i, j][1] <= self.green_cutoff.get():
-                    self.green_pixels_a += [(0, 0, 0)]
-                else:
-                    self.green_pixels_a += [(0, 255, 0)]
-
-        for i in range(self.blue_img.size[0]):
-            for j in range(self.blue_img.size[1]):
-                if self.blue_pixels[i, j][2] <= self.blue_cutoff.get():
-                    self.blue_pixels_a += [(0, 0, 0)]
-                else:
-                    self.blue_pixels_a += [(0, 0, 255)]
-
         self.comp_img = Image.new('RGB', self.red_img.size, (0, 0, 0))
         self.comp_pixels = self.comp_img.load()
-
-        for i in range(self.red_img.size[0]):
-            for j in range(self.red_img.size[1]):
-                index = j + i * self.comp_img.size[1]
-                red = self.red_pixels_a[index][0]
-                green = self.green_pixels_a[index][1]
-                blue = self.blue_pixels_a[index][2]
-                self.comp_pixels[i, j] = (red, green, blue)
 
     def make_composite(self):
-        self.comp_img = Image.new('RGB', self.red_img.size, (0, 0, 0))
-        self.comp_pixels = self.comp_img.load()
-
         for i in range(self.red_img.size[0]):
             for j in range(self.red_img.size[1]):
                 index = j + i * self.comp_img.size[1]
