@@ -39,8 +39,10 @@ class App(tk.Tk):
         self.load_images()
 
         # display image
-        self.geometry('700x450')
-        self.comp_img_resize = self.comp_img.resize((300, 300))
+        img_htw_ratio = self.comp_img.size[1] / self.comp_img.size[0]
+        self.geometry('600x' + str(int(400 * img_htw_ratio) + 150))
+        self.img_small_size = (400, int(400 * img_htw_ratio))
+        self.comp_img_resize = self.comp_img.resize(self.img_small_size)
         self.tkImg = ImageTk.PhotoImage(self.comp_img_resize)
 
         self.img_display = ttk.Label(self, image = self.tkImg)
@@ -168,8 +170,8 @@ class App(tk.Tk):
         self.comp_pixels = self.comp_img.load()
 
     def make_composite(self):
-        for i in range(self.red_img.size[0]):
-            for j in range(self.red_img.size[1]):
+        for i in range(self.comp_img.size[0]):
+            for j in range(self.comp_img.size[1]):
                 index = j + i * self.comp_img.size[1]
 
                 red = 0
@@ -178,25 +180,25 @@ class App(tk.Tk):
 
                 r = self.red_pixels[i, j][0]
                 if r > self.red_cutoff.get():
-                    red = eval(self.red_function.get())
+                    red = int(eval(self.red_function.get()))
                     if red > self.red_cap.get():
                         red = self.red_cap.get()
 
                 g = self.green_pixels[i, j][1]
                 if g > self.green_cutoff.get():
-                    green = eval(self.green_function.get())
+                    green = int(eval(self.green_function.get()))
                     if green > self.green_cap.get():
                         green = self.green_cap.get()
 
                 b = self.blue_pixels[i, j][2]
                 if b > self.blue_cutoff.get():
-                    blue = eval(self.blue_function.get())
+                    blue = int(eval(self.blue_function.get()))
                     if blue > self.blue_cap.get():
                         blue = self.blue_cap.get()
 
                 self.comp_pixels[i, j] = (red, green, blue)
 
-        self.comp_img_resize = self.comp_img.resize((300, 300))
+        self.comp_img_resize = self.comp_img.resize(self.img_small_size)
         self.tkImg = ImageTk.PhotoImage(self.comp_img_resize)
         self.img_display.configure(image = self.tkImg)
 
