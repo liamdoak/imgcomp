@@ -170,6 +170,18 @@ class App(tk.Tk):
         self.comp_pixels = self.comp_img.load()
 
     def make_composite(self):
+        red_cutoff_val = self.red_cutoff.get() 
+        green_cutoff_val = self.green_cutoff.get() 
+        blue_cutoff_val = self.blue_cutoff.get() 
+
+        red_cap_val = self.red_cap.get()
+        green_cap_val = self.green_cap.get()
+        blue_cap_val = self.blue_cap.get()
+
+        red_function_str = self.red_function.get()
+        green_function_str = self.green_function.get()
+        blue_function_str = self.blue_function.get()
+
         for i in range(self.comp_img.size[0]):
             for j in range(self.comp_img.size[1]):
                 index = j + i * self.comp_img.size[1]
@@ -179,22 +191,23 @@ class App(tk.Tk):
                 blue = 0
 
                 r = self.red_pixels[i, j][0]
-                if r > self.red_cutoff.get():
-                    red = int(eval(self.red_function.get()))
-                    if red > self.red_cap.get():
-                        red = self.red_cap.get()
-
                 g = self.green_pixels[i, j][1]
-                if g > self.green_cutoff.get():
-                    green = int(eval(self.green_function.get()))
-                    if green > self.green_cap.get():
-                        green = self.green_cap.get()
-
                 b = self.blue_pixels[i, j][2]
-                if b > self.blue_cutoff.get():
-                    blue = int(eval(self.blue_function.get()))
-                    if blue > self.blue_cap.get():
-                        blue = self.blue_cap.get()
+
+                if r > red_cutoff_val:
+                    red = eval(red_function_str)
+                    if red > red_cap_val:
+                        red = red_cap_val
+
+                if g > green_cutoff_val:
+                    green = eval(green_function_str)
+                    if green > green_cap_val:
+                        green = green_cap_val
+
+                if b > blue_cutoff_val:
+                    blue = eval(blue_function_str)
+                    if blue > blue_cap_val:
+                        blue = blue_cap_val
 
                 self.comp_pixels[i, j] = (red, green, blue)
 
