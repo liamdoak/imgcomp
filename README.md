@@ -2,14 +2,12 @@
 A program to combine the red, green, and blue components of images taken with a
 color fluorescence microscope.
 
-# Installation
+## Installation
 This program uses the Pillow library for image loading and manipulation. 
-To install, run:
-`pip install Pillow`
+To install, run: `pip install Pillow`
 
-# Usage
-To run the program, run the command:
-`python imgcomp.y`
+## Usage
+To run the program, run the command: `python imgcomp.y`
 
 imgcomp expects three images with the format "*prefix*_TX RED" for the red,
 "*prefix*_GFP" for the green, and "*prefix*_DAPI" for the blue. Its output will
