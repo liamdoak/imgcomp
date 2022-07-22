@@ -14,7 +14,7 @@ class App(tk.Tk):
         self.blue_cutoff = tk.IntVar()
 
     def create_widgets(self):
-        self.path_request = ttk.Label(self, text = 'Image Path')
+        self.path_request = ttk.Label(self, text = 'Image Prefix')
         self.path_request.pack()
         
         self.path_var = tk.StringVar()
