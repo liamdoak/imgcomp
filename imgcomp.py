@@ -195,17 +195,17 @@ class App(tk.Tk):
                 b = self.blue_pixels[i, j][2]
 
                 if r > red_cutoff_val:
-                    red = eval(red_function_str)
+                    red = int(eval(red_function_str))
                     if red > red_cap_val:
                         red = red_cap_val
 
                 if g > green_cutoff_val:
-                    green = eval(green_function_str)
+                    green = int(eval(green_function_str))
                     if green > green_cap_val:
                         green = green_cap_val
 
                 if b > blue_cutoff_val:
-                    blue = eval(blue_function_str)
+                    blue = int(eval(blue_function_str))
                     if blue > blue_cap_val:
                         blue = blue_cap_val
 
