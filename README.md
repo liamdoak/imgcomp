@@ -7,7 +7,7 @@ This program uses the Pillow library for image loading and manipulation.
 To install, run: `pip install Pillow`
 
 ## Usage
-To run the program, run the command: `python imgcomp.y`
+To run the program, run the command: `python imgcomp.py`
 
 imgcomp expects three images with the format "*prefix*_TX RED" for the red,
 "*prefix*_GFP" for the green, and "*prefix*_DAPI" for the blue. Its output will
